@@ -1,0 +1,32 @@
+<html>
+
+<!-- Could use a common header/footer template -->
+<head>
+  {% load static %}
+  <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}" />
+  <link rel="stylesheet" type="text/css" href='{% static "style.css" %}'>
+</head>
+
+<body>
+  <h1>CustomerApp</h1>
+  <div class="topnav">
+    <a href="/">Home</a>
+    <div>&nbsp;</div>
+    <a class="active" href="add">Add Customer</a>
+  </div>
+
+  <!-- Display success message after successful operation -->
+  {% if success %}
+  <p class="success">{{ success }}</p>
+  {% endif %}
+
+  <form action="{% url 'add' %}" method="post">
+    <h2>Add Customer</h2>
+    {% csrf_token %}
+    <!-- Generates form with vertical layout -->
+    {{ form.as_p }}
+    <input type="submit" value="Save">
+  </form>
+</body>
+
+</html>

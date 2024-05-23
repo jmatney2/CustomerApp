@@ -1,0 +1,71 @@
+<html>
+
+<!-- Could use a common header/footer template -->
+<head>
+  {% load static %}
+  <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}" />
+  <link rel="stylesheet" type="text/css" href='{% static "style.css" %}'>
+</head>
+
+<body>
+  <h1>CustomerApp</h1>
+  <div class="topnav">
+    <a class="active" href="/">Home</a>
+    <div>&nbsp;</div>
+    <a href="add">Add Customer</a>
+  </div>
+
+  <div id="customer-wrapper" class="listing">
+    <!-- Render the full list of customers, if available -->
+    <!-- Should probably use multiple pages and limited query size for a production application -->
+    {% if customers %}
+    {% for customer in customers %}
+    <div class="tooltip">{{ customer.first_name }} {{ customer.last_name }}
+      <!-- Use tooltip for detailed information -->
+      <span class="tooltiptext">
+        {{ customer.first_name }},
+        {{ customer.last_name }},
+        {{ customer.address }},
+        {{ customer.city }},
+        {{ customer.zip_code }},
+        {{ customer.state }}
+      </span>
+      <button data-id="{{ customer.id }}">DELETE</button>
+    </div>
+    {% endfor %}
+    {% else %}
+    <h2>No customers yet...</h2>
+    {% endif %}
+  </div>
+</body>
+
+<script>
+  // Add on-click to entire wrapper rather than individual buttons
+  const wrapper = document.getElementById('customer-wrapper')
+
+  // Async function to use "fetch" API
+  async function deleteCustomer(customer_id) {
+    const response = await fetch('/add/', {
+      method: 'DELETE',
+      headers: {
+        'X-CSRFToken': '{{ csrf_token }}',
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({customer_id: customer_id})
+    })
+    return response
+  }
+
+  // On-click for all buttons
+  wrapper.addEventListener('click', (event) => {
+    // If something other than a button is clicked, don't do anything
+    if (event.target.nodeName !== 'BUTTON') {
+      return
+    }
+
+    deleteCustomer(event.target.dataset.id).then(() => {location.reload()})
+  })
+</script>
+
+</html>

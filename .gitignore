@@ -1,0 +1,11 @@
+.venv
+
+# Django
+*.log
+*.pyc
+__pycache__
+db.sqlite3
+
+# Coverage report
+htmlcov
+.coverage
