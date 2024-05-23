@@ -12,6 +12,16 @@ Python Version: 3.9.18
     - Powershell: `.venv/Scripts/Activate.ps1`
 1. Install Python packages: `pip install -r requirements.txt`
 
+### Setup Django
+The Django database needs to be initialized. It is using Sqlite3 by default, but the database file is excluded from the repository. To set it up, run:
+
+```
+python manage.py makemigrations customers
+python manage.py migrate
+```
+
+Once this is complete, you can run the server.
+
 ### VS Code
 I use Visual Studio Code as my primary IDE.
 
@@ -37,7 +47,7 @@ If using VS Code over SSH and using the builtin terminal, this will automaticall
 The "Add Customer" page should work with auto-populated addresses common in modern web browsers. At minimum, it works with Google Chrome.
 
 ### Unit Tests
-To run the unit tests and generate a coverage report, run:
+To run the unit tests and generate a coverage report, run the following from the `customerapp` directory:
 ```
 coverage run --source='.' manage.py test
 coverage html
